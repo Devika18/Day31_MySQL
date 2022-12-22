@@ -1,0 +1,1329 @@
+mysql> create database addressbook;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| addressbook        |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.04 sec)
+
+mysql> use addressbook;
+Database changed
+mysql> create table person_details(
+    -> firstName varchar(20),
+    -> lastName varchar(20),
+    -> address varchar(50),
+    -> city varchar(15),
+    -> state varchar(30),
+    -> zipCode int,
+    -> phoneNumber int,
+    -> email varchar(20)
+    -> );
+Query OK, 0 rows affected (0.28 sec)
+
+mysql> show tables;
++-----------------------+
+| Tables_in_addressbook |
++-----------------------+
+| person_details        |
++-----------------------+
+1 row in set (0.04 sec)
+
+mysql> desc person_details;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| firstName   | varchar(20) | YES  |     | NULL    |       |
+| lastName    | varchar(20) | YES  |     | NULL    |       |
+| address     | varchar(50) | YES  |     | NULL    |       |
+| city        | varchar(15) | YES  |     | NULL    |       |
+| state       | varchar(30) | YES  |     | NULL    |       |
+| zipCode     | int         | YES  |     | NULL    |       |
+| phoneNumber | int         | YES  |     | NULL    |       |
+| email       | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 1122334455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 4455332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 6655779988, "sayaliwagh@gmail.com");
+ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 1122334455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 4455332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 6655779988, "sayaliwagh@gmail.com");
+ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 11223455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 44332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 66559988, "sayaliwagh@gmailcom");.com");
+Query OK, 3 rows affected (0.08 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+  
+mysql> select * from person_details;
++-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+| firstName | lastName | address   | city     | state     | zipCode | phoneNumber | email               |
++-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+| Devika    | Karpe    | Swargate  | Pune     | MH        |  411030 |    11223455 | devu@gmail.com      |
+| Asmita    | Shinde   | Dadar     | Mumbai   | MH        |  422308 |    44332211 | shinde10@gmail.com  |
+| Sayali    | Wagh     | Jayanagar | Banglore | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
++-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> update person_details set city = "Hyderabad" where firstName = "Asmita";
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from person_details;
++-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+| firstName | lastName | address   | city      | state     | zipCode | phoneNumber | email               |
++-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+| Devika    | Karpe    | Swargate  | Pune      | MH        |  411030 |    11223455 | devu@gmail.com      |
+| Asmita    | Shinde   | Dadar     | Hyderabad | MH        |  422308 |    44332211 | shinde10@gmail.com  |
+| Sayali    | Wagh     | Jayanagar | Banglore  | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
++-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> update person_details set state = "Hyderabad" where lastName = "Shinde";
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from person_details;
++-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+| firstName | lastName | address   | city      | state     | zipCode | phoneNumber | email               |
++-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+| Devika    | Karpe    | Swargate  | Pune      | MH        |  411030 |    11223455 | devu@gmail.com      |
+| Asmita    | Shinde   | Dadar     | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com  |
+| Sayali    | Wagh     | Jayanagar | Banglore  | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
++-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> delete from person_details where firstName = "Sayali";
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from person_details;
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+| firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              |
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+| Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |
+| Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com |
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from person_details where city = "Pune";
++-----------+----------+----------+------+-------+---------+-------------+----------------+
+| firstName | lastName | address  | city | state | zipCode | phoneNumber | email          |
++-----------+----------+----------+------+-------+---------+-------------+----------------+
+| Devika    | Karpe    | Swargate | Pune | MH    |  411030 |    11223455 | devu@gmail.com |
++-----------+----------+----------+------+-------+---------+-------------+----------------+
+1 row in set (0.00 sec)
+
+mysql> select count(firstName) from person_details;
++------------------+
+| count(firstName) |
++------------------+
+|                2 |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> select firstName, lastName from person_details order by city;
++-----------+----------+
+| firstName | lastName |
++-----------+----------+
+| Asmita    | Shinde   |
+| Devika    | Karpe    |
++-----------+----------+
+2 rows in set (0.01 sec)
+
+mysql> ALTER TABLE person_details ADD friends varchar(20);
+Query OK, 0 rows affected (0.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE person_details ADD family varchar(20);
+Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE person_details ADD profession varchar(30);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from person_details;
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+| firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends | family | profession |
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+| Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     | NULL    | NULL   | NULL       |
+| Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | NULL    | NULL   | NULL       |
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> UPDATE person_details SET family = "Smita", friends = " Nandini", profession = "Software Engineer" where firstName = "Devika";
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from person_details;
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+| firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends  | family | profession        |
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+| Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |  Nandini | Smita  | Software Engineer |
+| Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | NULL     | NULL   | NULL              |
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> UPDATE person_details SET family = "Asha", friends = "Nisha", profession = "Test Engineer" where lasteName = "Shinde";
+ERROR 1054 (42S22): Unknown column 'lasteName' in 'where clause'
+mysql> UPDATE person_details SET family = "Asha", friends = "Nisha", profession = "Test Engineer" where lastName = "Shinde";
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from person_details;
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+| firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends  | family | profession        |
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+| Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |  Nandini | Smita  | Software Engineer |
+| Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | Nisha    | Asha   | Test Engineer     |
++-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> select count(family) from person_details;
++---------------+
+| count(family) |
++---------------+
+|             2 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> mysql> show databases;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'mysql> show databases' at line 1
+mysql> +--------------------+
+    -> | Database           |
+    -> +--------------------+
+    -> | addressbook        |
+    -> | information_schema |
+    -> | mysql              |
+    -> | performance_schema |
+    -> | sys                |
+    -> +--------------------+
+    -> 5 rows in set (0.04 sec)
+    ->
+    -> mysql> use addressbook;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+--------------------+
+| Database           |
++--------------------+
+| addressbo' at line 1
+mysql> Database changed
+    -> mysql> create table person_details(
+    ->     -> firstName varchar(20),
+    ->     -> lastName varchar(20),
+    ->     -> address varchar(50),
+    ->     -> city varchar(15),
+    ->     -> state varchar(30),
+    ->     -> zipCode int,
+    ->     -> phoneNumber int,
+    ->     -> email varchar(20)
+    ->     -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Database changed
+mysql> create table person_details(
+    -> firstName varchar(20' at line 1
+mysql> Query OK, 0 rows affected (0.28 sec)
+    ->
+    -> mysql> show tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.28 sec)
+
+mysql> show tables' at line 1
+mysql> +-----------------------+
+    -> | Tables_in_addressbook |
+    -> +-----------------------+
+    -> | person_details        |
+    -> +-----------------------+
+    -> 1 row in set (0.04 sec)
+    ->
+    -> mysql> desc person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------------------+
+| Tables_in_addressbook |
++-----------------------+
+| ' at line 1
+mysql> +-------------+-------------+------+-----+---------+-------+
+    -> | Field       | Type        | Null | Key | Default | Extra |
+    -> +-------------+-------------+------+-----+---------+-------+
+    -> | firstName   | varchar(20) | YES  |     | NULL    |       |
+    -> | lastName    | varchar(20) | YES  |     | NULL    |       |
+    -> | address     | varchar(50) | YES  |     | NULL    |       |
+    -> | city        | varchar(15) | YES  |     | NULL    |       |
+    -> | state       | varchar(30) | YES  |     | NULL    |       |
+    -> | zipCode     | int         | YES  |     | NULL    |       |
+    -> | phoneNumber | int         | YES  |     | NULL    |       |
+    -> | email       | varchar(20) | YES  |     | NULL    |       |
+    -> +-------------+-------------+------+-----+---------+-------+
+    -> 8 rows in set (0.01 sec)
+    ->
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 1122334455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 4455332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 6655779988, "sayaliwagh@gmail.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-------------+-------------+------+-----+---------+-------+
+| Field       | Typ' at line 1
+mysql> ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 1122334455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 4455332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 6655779988, "sayaliwagh@gmail.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+mysql> ' at line 1
+mysql> ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 11223455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 44332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 66559988, "sayaliwagh@gmailcom");.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+mysql> ' at line 1
+    "> Query OK, 3 rows affected (0.08 sec)
+    "> Records: 3  Duplicates: 0  Warnings: 0
+    ">
+    ">     "> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.com");
+Query OK, 3 rows affected (0.08 sec)
+Records: 3  Duplicates: 0  Warnings' at line 1
+mysql>     "> show tables;
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     "> ^C
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"> show tables;
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    "> ^' at line 1
+mysql> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city     | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune     | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Mumbai   | MH        |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> update person_details set city = "Hyderabad" where firstName = "Asmita";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+----------+-----------+---------+-----------' at line 1
+mysql> Query OK, 1 row affected (0.06 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city      | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune      | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Hyderabad | MH        |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore  | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> update person_details set state = "Hyderabad" where lastName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+-----------+-----------+---------+----------' at line 1
+mysql> Query OK, 1 row affected (0.03 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city      | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune      | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore  | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> delete from person_details where firstName = "Sayali";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+-----------+-----------+---------+----------' at line 1
+mysql> Query OK, 1 row affected (0.06 sec)
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from person_details' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> select * from person_details where city = "Pune";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> | firstName | lastName | address  | city | state | zipCode | phoneNumber | email          |
+    -> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> | Devika    | Karpe    | Swargate | Pune | MH    |  411030 |    11223455 | devu@gmail.com |
+    -> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> 1 row in set (0.00 sec)
+    ->
+    -> mysql> select count(firstName) from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+------+-------+---------+-------------+------' at line 1
+mysql> +------------------+
+    -> | count(firstName) |
+    -> +------------------+
+    -> |                2 |
+    -> +------------------+
+    -> 1 row in set (0.00 sec)
+    ->
+    -> mysql> select firstName, lastName from person_details order by city;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+------------------+
+| count(firstName) |
++------------------+
+|                ' at line 1
+mysql> +-----------+----------+
+    -> | firstName | lastName |
+    -> +-----------+----------+
+    -> | Asmita    | Shinde   |
+    -> | Devika    | Karpe    |
+    -> +-----------+----------+
+    -> 2 rows in set (0.01 sec)
+    ->
+    -> mysql> ALTER TABLE person_details ADD friends varchar(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+
+| firstName | lastName |
++-----------+----------+
+| Asm' at line 1
+mysql> Query OK, 0 rows affected (0.46 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> ALTER TABLE person_details ADD family varchar(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> Query OK, 0 rows affected (0.12 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> ALTER TABLE person_details ADD profession varchar(30);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> Query OK, 0 rows affected (0.08 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends | family | profession |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     | NULL    | NULL   | NULL       |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | NULL    | NULL   | NULL       |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> UPDATE person_details SET family = "Smita", friends = " Nandini", profession = "Software Engineer" where firstName = "Devika";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> Query OK, 1 row affected (0.05 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends  | family | profession        |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |  Nandini | Smita  | Software Engineer |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | NULL     | NULL   | NULL              |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> UPDATE person_details SET family = "Asha", friends = "Nisha", profession = "Test Engineer" where lasteName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> ERROR 1054 (42S22): Unknown column 'lasteName' in 'where clause'
+    -> mysql> UPDATE person_details SET family = "Asha", friends = "Nisha", profession = "Test Engineer" where lastName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1054 (42S22): Unknown column 'lasteName' in 'where clause'
+mysql> UPDATE p' at line 1
+mysql> Query OK, 1 row affected (0.08 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends  | family | profession        |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |  Nandini | Smita  | Software Engineer |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | Nisha    | Asha   | Test Engineer     |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> select count(family) from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> +---------------+
+    -> | count(family) |
+    -> +---------------+
+    -> |             2 |
+    -> +---------------+
+    -> 1 row in set (0.00 sec)mysql> show databases;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+---------------+
+| count(family) |
++---------------+
+|             2 |
++-------' at line 1
+mysql> +--------------------+
+    -> | Database           |
+    -> +--------------------+
+    -> | addressbook        |
+    -> | information_schema |
+    -> | mysql              |
+    -> | performance_schema |
+    -> | sys                |
+    -> +--------------------+
+    -> 5 rows in set (0.04 sec)
+    ->
+    -> mysql> use addressbook;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+--------------------+
+| Database           |
++--------------------+
+| addressbo' at line 1
+mysql> Database changed
+    -> mysql> create table person_details(
+    ->     -> firstName varchar(20),
+    ->     -> lastName varchar(20),
+    ->     -> address varchar(50),
+    ->     -> city varchar(15),
+    ->     -> state varchar(30),
+    ->     -> zipCode int,
+    ->     -> phoneNumber int,
+    ->     -> email varchar(20)
+    ->     -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Database changed
+mysql> create table person_details(
+    -> firstName varchar(20' at line 1
+mysql> Query OK, 0 rows affected (0.28 sec)
+    ->
+    -> mysql> show tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.28 sec)
+
+mysql> show tables' at line 1
+mysql> +-----------------------+
+    -> | Tables_in_addressbook |
+    -> +-----------------------+
+    -> | person_details        |
+    -> +-----------------------+
+    -> 1 row in set (0.04 sec)
+    ->
+    -> mysql> desc person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------------------+
+| Tables_in_addressbook |
++-----------------------+
+| ' at line 1
+mysql> +-------------+-------------+------+-----+---------+-------+
+    -> | Field       | Type        | Null | Key | Default | Extra |
+    -> +-------------+-------------+------+-----+---------+-------+
+    -> | firstName   | varchar(20) | YES  |     | NULL    |       |
+    -> | lastName    | varchar(20) | YES  |     | NULL    |       |
+    -> | address     | varchar(50) | YES  |     | NULL    |       |
+    -> | city        | varchar(15) | YES  |     | NULL    |       |
+    -> | state       | varchar(30) | YES  |     | NULL    |       |
+    -> | zipCode     | int         | YES  |     | NULL    |       |
+    -> | phoneNumber | int         | YES  |     | NULL    |       |
+    -> | email       | varchar(20) | YES  |     | NULL    |       |
+    -> +-------------+-------------+------+-----+---------+-------+
+    -> 8 rows in set (0.01 sec)
+    ->
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 1122334455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 4455332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 6655779988, "sayaliwagh@gmail.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-------------+-------------+------+-----+---------+-------+
+| Field       | Typ' at line 1
+mysql> ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 1122334455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 4455332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 6655779988, "sayaliwagh@gmail.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+mysql> ' at line 1
+mysql> ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 11223455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 44332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 66559988, "sayaliwagh@gmailcom");.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+mysql> ' at line 1
+    "> Query OK, 3 rows affected (0.08 sec)
+    "> Records: 3  Duplicates: 0  Warnings: 0
+    ">
+    ">     "> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.com");
+Query OK, 3 rows affected (0.08 sec)
+Records: 3  Duplicates: 0  Warnings' at line 1
+mysql>     "> show tables;
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     "> ^C
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"> show tables;
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    "> ^' at line 1
+mysql> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city     | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune     | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Mumbai   | MH        |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> update person_details set city = "Hyderabad" where firstName = "Asmita";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+----------+-----------+---------+-----------' at line 1
+mysql> Query OK, 1 row affected (0.06 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city      | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune      | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Hyderabad | MH        |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore  | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> update person_details set state = "Hyderabad" where lastName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+-----------+-----------+---------+----------' at line 1
+mysql> Query OK, 1 row affected (0.03 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city      | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune      | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore  | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> delete from person_details where firstName = "Sayali";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+-----------+-----------+---------+----------' at line 1
+mysql> Query OK, 1 row affected (0.06 sec)
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from person_details' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> select * from person_details where city = "Pune";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> | firstName | lastName | address  | city | state | zipCode | phoneNumber | email          |
+    -> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> | Devika    | Karpe    | Swargate | Pune | MH    |  411030 |    11223455 | devu@gmail.com |
+    -> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> 1 row in set (0.00 sec)
+    ->
+    -> mysql> select count(firstName) from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+------+-------+---------+-------------+------' at line 1
+mysql> +------------------+
+    -> | count(firstName) |
+    -> +------------------+
+    -> |                2 |
+    -> +------------------+
+    -> 1 row in set (0.00 sec)
+    ->
+    -> mysql> select firstName, lastName from person_details order by city;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+------------------+
+| count(firstName) |
++------------------+
+|                ' at line 1
+mysql> +-----------+----------+
+    -> | firstName | lastName |
+    -> +-----------+----------+
+    -> | Asmita    | Shinde   |
+    -> | Devika    | Karpe    |
+    -> +-----------+----------+
+    -> 2 rows in set (0.01 sec)
+    ->
+    -> mysql> ALTER TABLE person_details ADD friends varchar(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+
+| firstName | lastName |
++-----------+----------+
+| Asm' at line 1
+mysql> Query OK, 0 rows affected (0.46 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> ALTER TABLE person_details ADD family varchar(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> Query OK, 0 rows affected (0.12 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> ALTER TABLE person_details ADD profession varchar(30);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> Query OK, 0 rows affected (0.08 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends | family | profession |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     | NULL    | NULL   | NULL       |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | NULL    | NULL   | NULL       |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> UPDATE person_details SET family = "Smita", friends = " Nandini", profession = "Software Engineer" where firstName = "Devika";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> Query OK, 1 row affected (0.05 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends  | family | profession        |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |  Nandini | Smita  | Software Engineer |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | NULL     | NULL   | NULL              |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> UPDATE person_details SET family = "Asha", friends = "Nisha", profession = "Test Engineer" where lasteName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> ERROR 1054 (42S22): Unknown column 'lasteName' in 'where clause'
+    -> mysql> UPDATE person_details SET family = "Asha", friends = "Nisha", profession = "Test Engineer" where lastName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1054 (42S22): Unknown column 'lasteName' in 'where clause'
+mysql> UPDATE p' at line 1
+mysql> Query OK, 1 row affected (0.08 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends  | family | profession        |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |  Nandini | Smita  | Software Engineer |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | Nisha    | Asha   | Test Engineer     |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> select count(family) from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> +---------------+
+    -> | count(family) |
+    -> +---------------+
+    -> |             2 |
+    -> +---------------+
+    -> 1 row in set (0.00 sec)mysql> show databases;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+---------------+
+| count(family) |
++---------------+
+|             2 |
++-------' at line 1
+mysql> +--------------------+
+    -> | Database           |
+    -> +--------------------+
+    -> | addressbook        |
+    -> | information_schema |
+    -> | mysql              |
+    -> | performance_schema |
+    -> | sys                |
+    -> +--------------------+
+    -> 5 rows in set (0.04 sec)
+    ->
+    -> mysql> use addressbook;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+--------------------+
+| Database           |
++--------------------+
+| addressbo' at line 1
+mysql> Database changed
+    -> mysql> create table person_details(
+    ->     -> firstName varchar(20),
+    ->     -> lastName varchar(20),
+    ->     -> address varchar(50),
+    ->     -> city varchar(15),
+    ->     -> state varchar(30),
+    ->     -> zipCode int,
+    ->     -> phoneNumber int,
+    ->     -> email varchar(20)
+    ->     -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Database changed
+mysql> create table person_details(
+    -> firstName varchar(20' at line 1
+mysql> Query OK, 0 rows affected (0.28 sec)
+    ->
+    -> mysql> show tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.28 sec)
+
+mysql> show tables' at line 1
+mysql> +-----------------------+
+    -> | Tables_in_addressbook |
+    -> +-----------------------+
+    -> | person_details        |
+    -> +-----------------------+
+    -> 1 row in set (0.04 sec)
+    ->
+    -> mysql> desc person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------------------+
+| Tables_in_addressbook |
++-----------------------+
+| ' at line 1
+mysql> +-------------+-------------+------+-----+---------+-------+
+    -> | Field       | Type        | Null | Key | Default | Extra |
+    -> +-------------+-------------+------+-----+---------+-------+
+    -> | firstName   | varchar(20) | YES  |     | NULL    |       |
+    -> | lastName    | varchar(20) | YES  |     | NULL    |       |
+    -> | address     | varchar(50) | YES  |     | NULL    |       |
+    -> | city        | varchar(15) | YES  |     | NULL    |       |
+    -> | state       | varchar(30) | YES  |     | NULL    |       |
+    -> | zipCode     | int         | YES  |     | NULL    |       |
+    -> | phoneNumber | int         | YES  |     | NULL    |       |
+    -> | email       | varchar(20) | YES  |     | NULL    |       |
+    -> +-------------+-------------+------+-----+---------+-------+
+    -> 8 rows in set (0.01 sec)
+    ->
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 1122334455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 4455332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 6655779988, "sayaliwagh@gmail.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-------------+-------------+------+-----+---------+-------+
+| Field       | Typ' at line 1
+mysql> ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 1122334455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 4455332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 6655779988, "sayaliwagh@gmail.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+mysql> ' at line 1
+mysql> ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 11223455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 44332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 66559988, "sayaliwagh@gmailcom");.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+mysql> ' at line 1
+    "> Query OK, 3 rows affected (0.08 sec)
+    "> Records: 3  Duplicates: 0  Warnings: 0
+    ">
+    ">     "> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.com");
+Query OK, 3 rows affected (0.08 sec)
+Records: 3  Duplicates: 0  Warnings' at line 1
+mysql>     "> show tables;
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     "> ^C
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"> show tables;
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    "> ^' at line 1
+mysql> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city     | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune     | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Mumbai   | MH        |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> update person_details set city = "Hyderabad" where firstName = "Asmita";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+----------+-----------+---------+-----------' at line 1
+mysql> Query OK, 1 row affected (0.06 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city      | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune      | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Hyderabad | MH        |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore  | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> update person_details set state = "Hyderabad" where lastName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+-----------+-----------+---------+----------' at line 1
+mysql> Query OK, 1 row affected (0.03 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city      | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune      | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore  | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> delete from person_details where firstName = "Sayali";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+-----------+-----------+---------+----------' at line 1
+mysql> Query OK, 1 row affected (0.06 sec)
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from person_details' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> select * from person_details where city = "Pune";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> | firstName | lastName | address  | city | state | zipCode | phoneNumber | email          |
+    -> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> | Devika    | Karpe    | Swargate | Pune | MH    |  411030 |    11223455 | devu@gmail.com |
+    -> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> 1 row in set (0.00 sec)
+    ->
+    -> mysql> select count(firstName) from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+------+-------+---------+-------------+------' at line 1
+mysql> +------------------+
+    -> | count(firstName) |
+    -> +------------------+
+    -> |                2 |
+    -> +------------------+
+    -> 1 row in set (0.00 sec)
+    ->
+    -> mysql> select firstName, lastName from person_details order by city;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+------------------+
+| count(firstName) |
++------------------+
+|                ' at line 1
+mysql> +-----------+----------+
+    -> | firstName | lastName |
+    -> +-----------+----------+
+    -> | Asmita    | Shinde   |
+    -> | Devika    | Karpe    |
+    -> +-----------+----------+
+    -> 2 rows in set (0.01 sec)
+    ->
+    -> mysql> ALTER TABLE person_details ADD friends varchar(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+
+| firstName | lastName |
++-----------+----------+
+| Asm' at line 1
+mysql> Query OK, 0 rows affected (0.46 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> ALTER TABLE person_details ADD family varchar(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> Query OK, 0 rows affected (0.12 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> ALTER TABLE person_details ADD profession varchar(30);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> Query OK, 0 rows affected (0.08 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends | family | profession |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     | NULL    | NULL   | NULL       |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | NULL    | NULL   | NULL       |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> UPDATE person_details SET family = "Smita", friends = " Nandini", profession = "Software Engineer" where firstName = "Devika";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> Query OK, 1 row affected (0.05 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends  | family | profession        |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |  Nandini | Smita  | Software Engineer |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | NULL     | NULL   | NULL              |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> UPDATE person_details SET family = "Asha", friends = "Nisha", profession = "Test Engineer" where lasteName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> ERROR 1054 (42S22): Unknown column 'lasteName' in 'where clause'
+    -> mysql> UPDATE person_details SET family = "Asha", friends = "Nisha", profession = "Test Engineer" where lastName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1054 (42S22): Unknown column 'lasteName' in 'where clause'
+mysql> UPDATE p' at line 1
+mysql> Query OK, 1 row affected (0.08 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends  | family | profession        |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |  Nandini | Smita  | Software Engineer |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | Nisha    | Asha   | Test Engineer     |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> select count(family) from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> +---------------+
+    -> | count(family) |
+    -> +---------------+
+    -> |             2 |
+    -> +---------------+
+    -> 1 row in set (0.00 sec)mysql> show databases;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+---------------+
+| count(family) |
++---------------+
+|             2 |
++-------' at line 1
+mysql> +--------------------+
+    -> | Database           |
+    -> +--------------------+
+    -> | addressbook        |
+    -> | information_schema |
+    -> | mysql              |
+    -> | performance_schema |
+    -> | sys                |
+    -> +--------------------+
+    -> 5 rows in set (0.04 sec)
+    ->
+    -> mysql> use addressbook;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+--------------------+
+| Database           |
++--------------------+
+| addressbo' at line 1
+mysql> Database changed
+    -> mysql> create table person_details(
+    ->     -> firstName varchar(20),
+    ->     -> lastName varchar(20),
+    ->     -> address varchar(50),
+    ->     -> city varchar(15),
+    ->     -> state varchar(30),
+    ->     -> zipCode int,
+    ->     -> phoneNumber int,
+    ->     -> email varchar(20)
+    ->     -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Database changed
+mysql> create table person_details(
+    -> firstName varchar(20' at line 1
+mysql> Query OK, 0 rows affected (0.28 sec)
+    ->
+    -> mysql> show tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.28 sec)
+
+mysql> show tables' at line 1
+mysql> +-----------------------+
+    -> | Tables_in_addressbook |
+    -> +-----------------------+
+    -> | person_details        |
+    -> +-----------------------+
+    -> 1 row in set (0.04 sec)
+    ->
+    -> mysql> desc person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------------------+
+| Tables_in_addressbook |
++-----------------------+
+| ' at line 1
+mysql> +-------------+-------------+------+-----+---------+-------+
+    -> | Field       | Type        | Null | Key | Default | Extra |
+    -> +-------------+-------------+------+-----+---------+-------+
+    -> | firstName   | varchar(20) | YES  |     | NULL    |       |
+    -> | lastName    | varchar(20) | YES  |     | NULL    |       |
+    -> | address     | varchar(50) | YES  |     | NULL    |       |
+    -> | city        | varchar(15) | YES  |     | NULL    |       |
+    -> | state       | varchar(30) | YES  |     | NULL    |       |
+    -> | zipCode     | int         | YES  |     | NULL    |       |
+    -> | phoneNumber | int         | YES  |     | NULL    |       |
+    -> | email       | varchar(20) | YES  |     | NULL    |       |
+    -> +-------------+-------------+------+-----+---------+-------+
+    -> 8 rows in set (0.01 sec)
+    ->
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 1122334455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 4455332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 6655779988, "sayaliwagh@gmail.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-------------+-------------+------+-----+---------+-------+
+| Field       | Typ' at line 1
+mysql> ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 1122334455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 4455332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 6655779988, "sayaliwagh@gmail.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+mysql> ' at line 1
+mysql> ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+    -> mysql> insert into person_details values ("Devika", "Karpe", "Swargate", "Pune", "MH", 411030, 11223455, "devu@gmail.com"), ("Asmita", "Shinde", "Dadar", "Mumbai", "MH", 422308, 44332211, "shinde10@gmail.com"), ("Sayali", "Wagh", "Jayanagar", "Banglore", "Karnataka", 423908, 66559988, "sayaliwagh@gmailcom");.com");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1264 (22003): Out of range value for column 'phoneNumber' at row 2
+mysql> ' at line 1
+    "> Query OK, 3 rows affected (0.08 sec)
+    "> Records: 3  Duplicates: 0  Warnings: 0
+    ">
+    ">     "> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.com");
+Query OK, 3 rows affected (0.08 sec)
+Records: 3  Duplicates: 0  Warnings' at line 1
+mysql>     "> show tables;
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     ">
+    ->     ">
+    ">     "> ^C
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"> show tables;
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    ">
+    "> ^' at line 1
+mysql> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city     | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune     | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Mumbai   | MH        |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> update person_details set city = "Hyderabad" where firstName = "Asmita";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+----------+-----------+---------+-----------' at line 1
+mysql> Query OK, 1 row affected (0.06 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city      | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune      | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Hyderabad | MH        |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore  | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> update person_details set state = "Hyderabad" where lastName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+-----------+-----------+---------+----------' at line 1
+mysql> Query OK, 1 row affected (0.03 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | firstName | lastName | address   | city      | state     | zipCode | phoneNumber | email               |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> | Devika    | Karpe    | Swargate  | Pune      | MH        |  411030 |    11223455 | devu@gmail.com      |
+    -> | Asmita    | Shinde   | Dadar     | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com  |
+    -> | Sayali    | Wagh     | Jayanagar | Banglore  | Karnataka |  423908 |    66559988 | sayaliwagh@gmailcom |
+    -> +-----------+----------+-----------+-----------+-----------+---------+-------------+---------------------+
+    -> 3 rows in set (0.00 sec)
+    ->
+    -> mysql> delete from person_details where firstName = "Sayali";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+-----------+-----------+-----------+---------+----------' at line 1
+mysql> Query OK, 1 row affected (0.06 sec)
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from person_details' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> select * from person_details where city = "Pune";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> | firstName | lastName | address  | city | state | zipCode | phoneNumber | email          |
+    -> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> | Devika    | Karpe    | Swargate | Pune | MH    |  411030 |    11223455 | devu@gmail.com |
+    -> +-----------+----------+----------+------+-------+---------+-------------+----------------+
+    -> 1 row in set (0.00 sec)
+    ->
+    -> mysql> select count(firstName) from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+------+-------+---------+-------------+------' at line 1
+mysql> +------------------+
+    -> | count(firstName) |
+    -> +------------------+
+    -> |                2 |
+    -> +------------------+
+    -> 1 row in set (0.00 sec)
+    ->
+    -> mysql> select firstName, lastName from person_details order by city;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+------------------+
+| count(firstName) |
++------------------+
+|                ' at line 1
+mysql> +-----------+----------+
+    -> | firstName | lastName |
+    -> +-----------+----------+
+    -> | Asmita    | Shinde   |
+    -> | Devika    | Karpe    |
+    -> +-----------+----------+
+    -> 2 rows in set (0.01 sec)
+    ->
+    -> mysql> ALTER TABLE person_details ADD friends varchar(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+
+| firstName | lastName |
++-----------+----------+
+| Asm' at line 1
+mysql> Query OK, 0 rows affected (0.46 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> ALTER TABLE person_details ADD family varchar(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> Query OK, 0 rows affected (0.12 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> ALTER TABLE person_details ADD profession varchar(30);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> Query OK, 0 rows affected (0.08 sec)
+    -> Records: 0  Duplicates: 0  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mys' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends | family | profession |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     | NULL    | NULL   | NULL       |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | NULL    | NULL   | NULL       |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+---------+--------+------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> UPDATE person_details SET family = "Smita", friends = " Nandini", profession = "Software Engineer" where firstName = "Devika";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> Query OK, 1 row affected (0.05 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends  | family | profession        |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |  Nandini | Smita  | Software Engineer |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | NULL     | NULL   | NULL              |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> UPDATE person_details SET family = "Asha", friends = "Nisha", profession = "Test Engineer" where lasteName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> ERROR 1054 (42S22): Unknown column 'lasteName' in 'where clause'
+    -> mysql> UPDATE person_details SET family = "Asha", friends = "Nisha", profession = "Test Engineer" where lastName = "Shinde";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1054 (42S22): Unknown column 'lasteName' in 'where clause'
+mysql> UPDATE p' at line 1
+mysql> Query OK, 1 row affected (0.08 sec)
+    -> Rows matched: 1  Changed: 1  Warnings: 0
+    ->
+    -> mysql> select * from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+my' at line 1
+mysql> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | firstName | lastName | address  | city      | state     | zipCode | phoneNumber | email              | friends  | family | profession        |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> | Devika    | Karpe    | Swargate | Pune      | MH        |  411030 |    11223455 | devu@gmail.com     |  Nandini | Smita  | Software Engineer |
+    -> | Asmita    | Shinde   | Dadar    | Hyderabad | Hyderabad |  422308 |    44332211 | shinde10@gmail.com | Nisha    | Asha   | Test Engineer     |
+    -> +-----------+----------+----------+-----------+-----------+---------+-------------+--------------------+----------+--------+-------------------+
+    -> 2 rows in set (0.00 sec)
+    ->
+    -> mysql> select count(family) from person_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+-----------+----------+----------+-----------+-----------+---------+-----------' at line 1
+mysql> +---------------+
+    -> | count(family) |
+    -> +---------------+
+    -> |             2 |
+    -> +---------------+
+    -> 1 row in set (0.00 sec)

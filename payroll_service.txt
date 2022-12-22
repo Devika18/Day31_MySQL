@@ -1,0 +1,198 @@
+mysql> create database payroll_service;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| addressbook        |
+| information_schema |
+| mysql              |
+| payroll_service    |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0.03 sec)
+
+mysql> use payroll_service;
+Database changed
+mysql> create table employee_payroll(id int auto_increment, name varchar(40), salary double, start_date date, primary key(id));
+Query OK, 0 rows affected (0.28 sec)
+
+mysql> desc employee_payroll;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id         | int         | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(40) | YES  |     | NULL    |                |
+| salary     | double      | YES  |     | NULL    |                |
+| start_date | date        | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.02 sec)
+
+mysql> insert into employee_payroll(name, salary, start_date) values ("Shweta", 250000.00, "2021-06-13"), ("Nalini", 150000.00, "2020-05-18"), ("Gayatri", 500000.00, "2020-03-21");
+Query OK, 3 rows affected (0.08 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll order by name desc;
++----+---------+--------+------------+
+| id | name    | salary | start_date |
++----+---------+--------+------------+
+|  1 | Shweta  | 250000 | 2021-06-13 |
+|  2 | Nalini  | 150000 | 2020-05-18 |
+|  3 | Gayatri | 500000 | 2020-03-21 |
++----+---------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee_payroll where name = "Nalini" or salary = 250000.00;
++----+--------+--------+------------+
+| id | name   | salary | start_date |
++----+--------+--------+------------+
+|  1 | Shweta | 250000 | 2021-06-13 |
+|  2 | Nalini | 150000 | 2020-05-18 |
++----+--------+--------+------------+
+2 rows in set (0.04 sec)
+
+mysql> select min(salary) from employee_payroll;
++-------------+
+| min(salary) |
++-------------+
+|      150000 |
++-------------+
+1 row in set (0.04 sec)
+
+mysql> select count(salary) from employee_payroll;
++---------------+
+| count(salary) |
++---------------+
+|             3 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(salary) as sum from employee_payroll;
++--------+
+| sum    |
++--------+
+| 900000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select avg(salary) as sum from employee_payroll;
++--------+
+| sum    |
++--------+
+| 300000 |
++--------+
+1 row in set (0.03 sec)
+
+mysql> select max(salary) as sum from employee_payroll;
++--------+
+| sum    |
++--------+
+| 500000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee_payroll where id in (1,3);
++----+---------+--------+------------+
+| id | name    | salary | start_date |
++----+---------+--------+------------+
+|  1 | Shweta  | 250000 | 2021-06-13 |
+|  3 | Gayatri | 500000 | 2020-03-21 |
++----+---------+--------+------------+
+2 rows in set (0.15 sec)
+
+mysql> select * from employee_payroll where id between 1 and 3;
++----+---------+--------+------------+
+| id | name    | salary | start_date |
++----+---------+--------+------------+
+|  1 | Shweta  | 250000 | 2021-06-13 |
+|  2 | Nalini  | 150000 | 2020-05-18 |
+|  3 | Gayatri | 500000 | 2020-03-21 |
++----+---------+--------+------------+
+3 rows in set (0.03 sec)
+
+mysql> select * from employee_payroll limit 2;
++----+--------+--------+------------+
+| id | name   | salary | start_date |
++----+--------+--------+------------+
+|  1 | Shweta | 250000 | 2021-06-13 |
+|  2 | Nalini | 150000 | 2020-05-18 |
++----+--------+--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee_payroll WHERE name LIKE '_____%';
++----+---------+--------+------------+
+| id | name    | salary | start_date |
++----+---------+--------+------------+
+|  1 | Shweta  | 250000 | 2021-06-13 |
+|  2 | Nalini  | 150000 | 2020-05-18 |
+|  3 | Gayatri | 500000 | 2020-03-21 |
++----+---------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> update employee_payroll set name = "Anjali" where name = "Nalini";
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+--------+------------+
+| id | name    | salary | start_date |
++----+---------+--------+------------+
+|  1 | Shweta  | 250000 | 2021-06-13 |
+|  2 | Anjali  | 150000 | 2020-05-18 |
+|  3 | Gayatri | 500000 | 2020-03-21 |
++----+---------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> delete from employee_payroll where name = "Anjali";
+Query OK, 1 row affected (0.06 sec)
+
+mysql> ALTER TABLE employee_payroll ADD column gender varchar(15) after name;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE employee_payroll MODIFY column gender varchar(1);
+Query OK, 2 rows affected (0.54 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc employee_payroll;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id         | int         | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(40) | YES  |     | NULL    |                |
+| gender     | varchar(1)  | YES  |     | NULL    |                |
+| salary     | double      | YES  |     | NULL    |                |
+| start_date | date        | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> create table employee_department (department_id int auto_increment, department_name varchar(20), employee_department_id int, primary key(department_id), foreign key(employee_department_id) references employee_payroll(id));
+Query OK, 0 rows affected (1.30 sec)
+
+mysql> desc employee_department;
++------------------------+-------------+------+-----+---------+----------------+
+| Field                  | Type        | Null | Key | Default | Extra          |
++------------------------+-------------+------+-----+---------+----------------+
+| department_id          | int         | NO   | PRI | NULL    | auto_increment |
+| department_name        | varchar(20) | YES  |     | NULL    |                |
+| employee_department_id | int         | YES  | MUL | NULL    |                |
++------------------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.03 sec)
+
+mysql> insert into employee_department (department_name, employee_department_id) values("hr", 2), ("test", 3);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`payroll_service`.`employee_department`, CONSTRAINT `employee_department_ibfk_1` FOREIGN KEY (`employee_department_id`) REFERENCES `employee_payroll` (`id`))
+mysql> select * from employee_department;
+Empty set (0.00 sec)
+
+mysql> insert into employee_department (department_name, employee_department_id) values ("hr", 2), ("testing", 3);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`payroll_service`.`employee_department`, CONSTRAINT `employee_department_ibfk_1` FOREIGN KEY (`employee_department_id`) REFERENCES `employee_payroll` (`id`))
+mysql> select employee_payroll.name, employee_payroll.start_date,
+    -> employee_department.department_name from employee_payroll inner join employee_department on employee_payroll.id = employee_department.employee_department_id;
+Empty set (0.00 sec)
+
+mysql> select employee_payroll.name, employee_payroll.start_date, employee_department.department_name from employee_payroll cross join employee_department;
+Empty set (0.00 sec)
+
+mysql>
